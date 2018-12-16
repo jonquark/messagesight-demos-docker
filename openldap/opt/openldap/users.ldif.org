@@ -1,0 +1,113 @@
+#!/bin/bash
+#
+#*******************************************************************************
+# Copyright (c) 2018 IBM Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# and Eclipse Distribution License v1.0 which accompany this distribution.
+#
+# The Eclipse Public License is available at
+#    http://www.eclipse.org/legal/epl-v10.html
+# and the Eclipse Distribution License is available at
+#   http://www.eclipse.org/org/documents/edl-v10.php.
+#
+#
+# Contrinutors:
+#    Ranjan Dasgupta         - Initial drop
+#
+#*******************************************************************************
+#
+
+version: 1
+
+dn: o=IBM
+objectClass: organization
+o: IBM
+
+dn: cn=Manager,o=IBM
+objectClass: organizationalRole
+cn: Manager
+
+dn: ou=MessageSight,o=IBM
+ou: MessageSight
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=users,ou=MessageSight,o=IBM
+ou: users
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=groups,ou=MessageSight,o=IBM
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: MsgUser1
+sn: MsgUser1
+uid: MsgUser1
+userPassword: msDemoPassw0rd
+
+dn: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: MsgUser2
+sn: MsgUser2
+uid: MsgUser2
+userPassword: msDemoPassw0rd
+
+dn: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: MsgUser3
+sn: MsgUser3
+uid: MsgUser3
+userPassword: msDemoPassw0rd
+
+dn: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: MsgUser4
+sn: MsgUser4
+uid: MsgUser4
+userPassword: msDemoPassw0rd
+
+dn: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: MsgUser5
+sn: MsgUser5
+uid: MsgUser5
+userPassword: msDemoPassw0rd
+
+dn: cn=MsgGroup1,ou=groups,ou=MessageSight,o=IBM
+objectClass: groupOfNames
+objectClass: top
+cn: MsgGroup1
+member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
+
+dn: cn=MsgGroup2,ou=groups,ou=MessageSight,o=IBM
+objectClass: groupOfNames
+objectClass: top
+cn: MsgGroup2
+member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
+
+

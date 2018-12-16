@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+#*******************************************************************************
+# Copyright (c) 2018 IBM Corp.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# and Eclipse Distribution License v1.0 which accompany this distribution.
+#
+# The Eclipse Public License is available at
+#    http://www.eclipse.org/legal/epl-v10.html
+# and the Eclipse Distribution License is available at
+#   http://www.eclipse.org/org/documents/edl-v10.php.
+#
+#
+# Contrinutors:
+#    Ranjan Dasgupta         - Initial drop
+#
+#*******************************************************************************
+#
+
+
+include /etc/openldap/schema/core.schema
+include /etc/openldap/schema/cosine.schema
+include /etc/openldap/schema/inetorgperson.schema
+include /etc/openldap/schema/ppolicy.schema
+
+loglevel 64
+logfile /ima/logs/openldap.log
+pidfile /opt/openldap/config/slapd.pid
+argsfile /opt/openldap/config/slapd.args
+
+# specifies the maximum number of entries to return from a search operation
+sizelimit 500
+
+# specifies the maximum number of seconds (in real time) slapd will spend
+# answering a search request. If a request is not finished in this time,
+# a result indicating an exceeded timelimit will be returned.
+timelimit 3600
+
+
+#######################################################################
+# BDB database definitions
+#######################################################################
+database bdb
+suffix "o=IBM"
+rootdn "cn=Manager,o=IBM"
+rootpw msDemoPassw0rd
+directory /opt/openldap/openldap-data
+
+# Indices to maintain
+index objectClass eq
+
+# Run checkpoint - 128KB or every minute 
+checkpoint 128 1
+
+# Auto remove old transaction log files
+dbconfig set_flags DB_LOG_AUTOREMOVE
+
+# Turn off monitoring
+monitoring off
