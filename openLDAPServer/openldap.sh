@@ -51,16 +51,18 @@
 # USERPASSWD={SSHA}v5MrH1YtbRqnBiNOZsAYY42x6ZefzRkJ
 #
 # NOTE:
-# Openldap container requires docker netwrok ms-ldap-net. To create docker
+# Openldap container requires docker netwrok ms-service-net. To create docker
 # network used for various MessageSight demo containsers this script will 
-# use script DockerNetworks.sh (in the parent directory).
+# use script ../ConfigureDockerNetworks.sh (in the parent directory).
 #
 # 
 
 BINDPASSWD=msDemoPassw0rd
 USERPASSWD=testPassw0rd
 
-ACTION=$1
+ARG1=$1
+ARG2=$2
+ARG3=$3
 
 CURDIR=`pwd`
 export CURDIR
@@ -68,18 +70,33 @@ export CURDIR
 OSTYPE=`uname -s`
 export OSTYPE
 
+function usage() {
+    echo
+    echo "$0: Build, run or remove openldap docker image and container."
+    echo "ERROR: Invalid option(s) ar specified: $ARG1, $ARG2, $ARG3"
+    echo "USAGE: $0 <build|run|remove> [image]"
+    echo
+    exit 1
+}
+
+ACTION=$1
+TYPE=$2
+
+if [ $# -gt 2 ]
+then
+    usage
+fi
+
 imageExist=0
 containerExist=0
 
-
 # Create network if not present
 function check_create_network() {
-    # check if ms-ldap-net is created
-    sudo docker network ls | grep ms-ldap-net > /dev/null 2>&1
+    # check if ms-service-net is created
+    sudo docker network ls | grep ms-service-net > /dev/null 2>&1
     if [ $? -eq 1 ]
     then
-        # Use DockerNetworks.sh script to create docker network ms-ldap-net
-        ../DockerNetworks.sh ms-ldap-net
+        ../configureNetworks.sh create
     fi
 }
 
@@ -111,8 +128,10 @@ function start_container() {
 
 # run container
 function run_container() {
-    echo "Run openldap docker container. Use docker network ms-ldap-net."
-    sudo docker run --cap-add SYS_ADMIN -p 389:389 -p 636:636 -it -m 1G --net ms-ldap-net --name openldap -d openldap:1.0
+    echo "Run openldap docker container. Use docker network ms-service-net."
+    sudo docker run --cap-add SYS_ADMIN -p 389:389 -p 636:636 -it -m 1G \
+        --net ms-service-net --ip 172.27.5.1 --name openldap -d openldap:1.0
+
 }
 
 # Check if image exist
@@ -162,8 +181,8 @@ function check_image() {
     fi
 }
 
-# Remove container and image
-function remove_ldap() {
+# Stop and remove container
+function remove_ldap_container() {
     check_container
     if [ $containerExist -eq 1 ]
     then
@@ -172,6 +191,10 @@ function remove_ldap() {
     else
         echo "Openldap docker container is not running."
     fi
+}
+
+# Remove image
+function remove_ldap_image() {
     check_image
     if [ $imageExist -eq 1 ]
     then
@@ -184,6 +207,7 @@ function remove_ldap() {
 #  Build docker image
 if [ "$ACTION" == "build" ]
 then
+    echo "Building openldap docker image."
     check_image
     if [ $imageExist -eq 0 ]
     then
@@ -197,21 +221,27 @@ fi
 # Remove container and image
 if [ "$ACTION" == "remove" ]
 then
-    echo "Removing openldap docker container and image."
-    remove_ldap
+    echo "Removing openldap docker container."
+    remove_ldap_container
+
+    if [ "${TYPE}" == "image" ]
+    then
+        remove_ldap_image
+    fi
     exit 0
 fi
 
 # Run container
 if [ "$ACTION" == "run" ]
 then
-    echo "Run openldap docker container."
+    echo "Running openldap docker container."
     check_image
     if [ $imageExist -eq 0 ]
     then
         echo "Openldap docker image is not found. Build docker image."
         build_image
     fi
+    check_create_network
     check_container
     if [ $containerExist -eq 1 ]
     then
@@ -222,11 +252,5 @@ then
     exit 0
 fi
 
-echo
-echo "ERROR: Invalid option=${ACTION} is specified."
-echo "USAGE: $0 <build|run|remove>"
-echo
-
-exit 1
-
+usage
 

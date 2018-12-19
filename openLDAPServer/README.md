@@ -36,29 +36,37 @@ By default the user MsgUser1 ... MsgUser5 password is set to testPassw0rd.
 To change the password, edit the value of USERPASSWD variable in *openldapDocker.sh*
 script. Use *slappasswd* utility to create a password.
 
-### How to build openldap docker container image?
+### How to build openldap docker image?
 
 Use the following command to build openldap docker image:
 ```
-$ ./openldapDocker.sh build
+$ ./openldap.sh build
+```
+
+### How to remove openldap docker image?
+
+Use the following command to remove openldap docker image:
+```
+$ ./openldap.sh remove image
 ```
 
 ### How to run openldap docker container?
 
 Use the following command to run openldap container:
 ```
-$ ./openldapDocker.sh run
+$ ./openldap.sh run
 ```
-NOTES: 
-* This command will build openldap docker image, if image doesn't exist.
+NOTES:
+* Openldap container uses ms-service-net docker subnet created by script ../configureNetworks.sh
+  and assigns IP address as 172.27.5.1 to openldap container.
 * Do not use openldap server immediately after executing this step to run the container.
   It takes approximately 90 seconds to complete internal setup and configuration.
 
-### How to remove openldap docker container and image?
+### How to remove openldap docker container?
 
-Use the following command to remove any exiting openladp container and docker image:
+Use the following command to remove openladp container:
 ```
-$ ./openldapDocker.sh remove
+$ ./openldap.sh remove
 ```
 
 ## How to configure external LDAP Configuration in IBM IoT MessageSight?

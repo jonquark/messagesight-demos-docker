@@ -46,8 +46,9 @@ RUN yum -y update && \
     yum -y install net-tools openldap-servers openldap-clients && \
     yum clean all
 
-CMD ["/usr/bin/run.sh"]
-
+RUN mkdir -p /opt/openldap/bin
+COPY ./opt/openldap/bin/run.sh /opt/openldap/bin/
 COPY ./opt.tar /tmp/
-COPY run.sh /usr/bin/run.sh
+
+CMD ["/opt/openldap/bin/run.sh"]
 
