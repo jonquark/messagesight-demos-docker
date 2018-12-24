@@ -58,7 +58,9 @@ $ ./buildMSImages.sh <server|webui|bridge> remove
 
 
 #####################################################################
-    TODO:   Add steps to run configure and run demos
+
+    TODO:   Add steps to configure and run demos
+
 #####################################################################
 
 
