@@ -8,12 +8,13 @@ You can build and run MessageSight containers and other required containers on a
 
 The following scripts are provided to setup different demostration cases:
 
-1. DockerNetworks.sh: Use this script to create docker networks used in different demo environment.
+1. configureNetworks.sh: Use this script to create docker networks used in different demo environment.
 
-2. DockerMSImages.sh: This script can be build MessageSight Server, WebUI, and Bridge docker images, or remove MessageSight Server, WebUI, and Bridge docker containers and associiated images.
+2. buildMSImages.sh: This script can be build MessageSight Server, WebUI, and Bridge docker images, or remove MessageSight Server, WebUI, and Bridge docker containers and associiated images.
 
-3. ConfigureLDAPDemo.sh: This script runs and configures an openLDAP server and a MessageSight server containers for IBM IoT MessageSight and external LDAP integration demos.
+3. configureWebUI.sh: This script runs a MessageSight WebUI container.
 
+4. configureServer.sh: This script runs a MessageSight server container and configures the server to run demos.
 
 ### Prerequisite steps:
 
@@ -38,23 +39,26 @@ IBMIoTMessageSightWebUI-5.0.0.0.20181127-1958.tz
 wlp-javaee8-18.0.0.3.zip
 ```
 
-
 ### Build IBM IoT MessageSight docker images:
 
-The script "DockerMSImages.sh" can be used to:
+The script "buildMSImages.sh" can be used to:
 
 - Build MessageSight Server, WebUI, and Bridge docker images.
 - Remove MessageSight Server, WebUI, and Bridge docker containers and associiated images.
 
 To build docker container image of MessageSight Server, WebUI or Bridge:
 ```
-$ ./DockerMSImages.sh <server|webui|bridge>
+$ ./buildMSImages.sh <server|webui|bridge>
 ```
 
 To remove MessageSight Server, WebUI, or Bridge container and image:
 ```
-$ ./DockerMSImages.sh <server|webui|bridge> remove
+$ ./buildMSImages.sh <server|webui|bridge> remove
 ```
 
+
+#####################################################################
+    TODO:   Add steps to run configure and run demos
+#####################################################################
 
 
