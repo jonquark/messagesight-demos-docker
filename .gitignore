@@ -1,4 +1,5 @@
 pkgs
 mstmpdir
 openLDAPServer/opt.tar
+testClients/ms-mqtt-java-sample/target
 venv

@@ -147,9 +147,6 @@ function check_image() {
 
 # Build image
 function build_image() {
-    # Copy entry script to install dir
-    cp ${CURDIR}/run.sh ${CURDIR}/opt/openldap/bin
-
     # Change passwords 
     if [ "${BINDPASSWD}" != "msDemoPassw0rd" ]
     then

@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+#
+#****************************************************************
+# Licensed Materials - Property of IBM
+# 5725-S17 IBM MessageSight
+# (C) Copyright IBM Corp. 2018.  All Rights Reserved.
+#
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with
+# IBM Corp.
+#****************************************************************
+#
+################################################
+#   This script is for internal IBM use only
+################################################
+#
+# Author: Ranjan Dasgupta
+#
+# WAS-Liberty configuration for OAuth
+#
+
+yum -y update
+yum -y install net-tools unzip java
+yum clean all
+
+mkdir -p /opt/ibm
+cd /opt/ibm
+pwd
+unzip /tmp/WASPKGNAME
+ls
+cd /opt/ibm/wlp
+bin/installUtility install --acceptLicense jsp-2.2 security-1.0 appSecurity-1.0 servlet-3.0 ssl-1.0 oauth-2.0
+
+bin/server create oauthServer
+cp /tmp/server.xml /opt/ibm/wlp/usr/servers/oauthServer/.
+mkdir -p /opt/ibm/wlp/usr/servers/oauthServer/resources/security
+if [ -f /opt/ibm/wlp/usr/servers/oauthServer/resources/security/key.jks ]
+then
+    cp /opt/ibm/wlp/usr/servers/oauthServer/resources/security/key.jks /opt/ibm/wlp/usr/servers/oauthServer/resources/security/key.jks.org
+fi
+cp /tmp/oauth2.jks /opt/ibm/wlp/usr/servers/oauthServer/resources/security/key.jks
+
+bin/server start oauthServer
+bin/server stop oauthServer
+
+
+
+

@@ -8,38 +8,36 @@ You can build and run MessageSight containers and other required containers on a
 
 The following scripts are provided to setup different demostration cases:
 
-1. DockerMSImages.sh: Use this script to build IBM IoT MessageSight v5 Server, WebUI, and Bridge docker container images. 
+1. DockerNetworks.sh: Use this script to create docker networks used in different demo environment.
 
-2. DockerNetworks.sh: Use this script to create docker networks used in different demo environment.
+2. DockerMSImages.sh: This script can be build MessageSight Server, WebUI, and Bridge docker images, or remove MessageSight Server, WebUI, and Bridge docker containers and associiated images.
 
 3. ConfigureLDAPDemo.sh: This script runs and configures an openLDAP server and a MessageSight server containers for IBM IoT MessageSight and external LDAP integration demos.
 
-
-## Install MessageSight in Docker environment
-
-The script "DockerMSImages.sh" can be used to:
-
-- Build MessageSight Server, WebUI, and Bridge docker images.
-- Remove MessageSight Server, WebUI, and Bridge docker containers and associiated images.
 
 ### Prerequisite steps:
 
 1. Setup docker CE environment on a system where docker CE is supported. For information on Docker Community Edition for your operating environment, see [Docker Communit Edition](https://store.docker.com/search?q=Docker%20Community%20Edition&type=edition&offering=community).
 
-2. Download IBM IoT MessageSight v5 install packages from IBM site: [IBM IoT MessageSight v5](https://developer.ibm.com/iotplatform/2018/12/11/ibm-iot-messagesight-v5-announced/)
-
-3. Create a directory "MessageSightV5_pkgs" and copy the downloaded files:
-```
-$ ls MessageSightV5_pkgs
-IBMIoTMessageSightServer-5.0.0.0.20181127-1958.tz
-IBMIoTMessageSightBridge-5.0.0.0.20181127-1958.tz
-IBMIoTMessageSightWebUI-5.0.0.0.20181127-1958.tz
-```
-
-4. Clone this project:
+2. Clone this project:
 ```
 $ git clone https://github.com/ibm-watson-iot/messagesight-demos-docker/develop
 ```
+
+3. To build docker images needed to run IBM IoT MessageSight demos, you need to download some prerequite packages. Create a directory named "pkgs" to keep the downloaded packages.
+
+4. Download IBM IoT MessageSight v5 install packages from [IBM IoT MessageSight v5](https://developer.ibm.com/iotplatform/2018/12/11/ibm-iot-messagesight-v5-announced/) and copy the files in the "pkgs" directory.
+
+5. Download WAS Liberty profile package from [IBM WAS Liberty Profile](https://developer.ibm.com/wasdev/downloads/#asset/runtimes-wlp-javaee8) and copy the zip file in the "pkgs" directory.
+
+6. The "pkgs" directory must contain the following files:
+```
+IBMIoTMessageSightServer-5.0.0.0.20181127-1958.tz
+IBMIoTMessageSightBridge-5.0.0.0.20181127-1958.tz
+IBMIoTMessageSightWebUI-5.0.0.0.20181127-1958.tz
+wlp-javaee8-18.0.0.3.zip
+```
+
 
 ### Build IBM IoT MessageSight docker images:
 

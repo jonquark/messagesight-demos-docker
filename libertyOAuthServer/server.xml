@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="new server">
+
+    <!-- Enable features -->
+    <featureManager>
+    <feature>jsp-2.2</feature>
+    <feature>security-1.0</feature>
+    <feature>appSecurity-1.0</feature>
+    <feature>servlet-3.0</feature>      
+    <feature>ssl-1.0</feature>
+    <feature>oauth-2.0</feature>
+    <feature>openidConnectClient-1.0</feature>
+    </featureManager>
+
+    <!-- This template enables security. To get the full use of all the capabilities, a keystore and user registry are required. -->
+    
+    <!-- For the keystore, default keys are generated and stored in a keystore. To provide the keystore password, generate an 
+         encoded password using bin/securityUtility encode and add it below in the password attribute of the keyStore element. 
+         Then uncomment the keyStore element. -->
+    <keyStore id="defaultKeyStore" password="password" />
+
+    
+    <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
+    <httpEndpoint id="defaultHttpEndpoint"
+    host="*"
+    httpPort="9080"
+    httpsPort="9443" />
+                  
+    <!-- Automatically expand WAR files and EAR files -->
+    <applicationManager autoExpand="true"/>
+
+    <basicRegistry id="basic" realm="customRealm">
+    <user name="test1" password="test1" />
+    <user name="test2" password="test2" />
+    <user name="test3" password="test3" />
+    <user name="test4" password="test4" />
+    <user name="test5" password="test5" />
+    <user name="test6" password="test6" />
+    <user name="test7" password="test7" />
+    <user name="test8" password="test8" />
+    <user name="test9" password="test9" />
+    <user name="test10" password="test10" />
+    <user name="test11" password="test11" />
+    <user name="test12" password="test12" />
+    <user name="test13" password="test13" />
+    <user name="test14" password="test14" />
+    <user name="test15" password="test15" />
+    <user name="test16" password="test16" />
+    <user name="test17" password="test17" />
+    <user name="test18" password="test18" />
+    <user name="test19" password="test19" />
+    <user name="test20" password="test20" />
+
+    <group name="testGroup0">
+        <member name="test1" />
+        <member name="test2" />
+        <member name="test3" />
+        <member name="test4" />
+        <member name="test5" />
+    </group>
+
+    <group name="testGroup1">
+        <member name="test6" />
+        <member name="test7" />
+        <member name="test8" />
+        <member name="test9" />
+        <member name="test10" />
+    </group>
+
+    <group name="testGroup3">
+        <member name="test11" />
+        <member name="test12" />
+        <member name="test13" />
+        <member name="test14" />
+        <member name="test15" />
+    </group>
+
+    <group name="testGroup4">
+        <member name="test16" />
+        <member name="test17" />
+        <member name="test18" />
+        <member name="test19" />
+        <member name="test20" />
+    </group>
+
+    </basicRegistry>
+
+    <oauthProvider id="DemoProvider"
+       oauthOnly="false"
+       grantType="authorization_code,password,refresh_token"
+       libraryRef="myLib"
+       accessTokenLifetime="7776000"
+       scope="user group"
+       mediatorClass-name="com.ibm.ws.security.oauth20.mediator.ResourceOwnerValidationMediator">
+
+        <localStore>
+            <client name="LibertyRocks" secret="AndMakesConfigurationEasy"
+                displayname="Test Client for OAuth"
+                redirect="http://127.0.0.1/oauthclient/redirect.jsp"
+                enabled="true">
+            </client>
+        </localStore>
+    </oauthProvider>
+</server>
