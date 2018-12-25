@@ -419,7 +419,7 @@ curl -X POST http://127.0.0.1:9089/ima/v1/configuration -d \
       "ClientAddress": "",
       "UserID": "",
       "CommonNames": "",
-      "ClientID": "iot*",
+      "ClientID": "IBMIoT*",
       "GroupID": "",
       "Protocol": "MQTT",
       "Topic": "*",

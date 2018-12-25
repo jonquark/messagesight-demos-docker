@@ -18,6 +18,7 @@
 
 package com.ibm.messagesight.samples.mqttv3;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.sql.Timestamp;
@@ -56,6 +57,8 @@ public class MSClientSample implements Runnable {
    final static int EXACTLY_ONCE = 2;
 
    public static String progName = null;
+   public static int disconnTestPublisher = 0;
+   public static int disconnTestSubscriber = 0;
 
    /**
     * Output the usage statement to standard out.
@@ -176,20 +179,51 @@ public class MSClientSample implements Runnable {
    public static void main(String[] args) {
       /* Instantiate and run the client. */
       new MSClientSample(args).run();
+
+      /* Handle disconnected client demo case: publisher client */
+      if ( disconnTestPublisher == 1 ) {
+          System.out.println("Disconnected Test Client: Republish messages after 30 seconds");
+
+          /* wait for 30 seconds for disconnected client durable subscriber to get disconnected
+           * and then publish messages again on same topic
+           */
+          try {
+              Thread.sleep(30 * 1000);
+              new MSClientSample(args).run();
+          } catch(Exception e) {};
+      }
+
+      /* Handle disconnected client demo case: subscriber client */
+      if ( disconnTestSubscriber == 1 ) {
+          System.out.println("Disconnected Test Client: Wakeup and resubscribe if wakeup file is set.");
+
+          /* wait for 70 seconds for disconnected client notification to set wakeup file */
+          try {
+              Thread.sleep(70 * 1000);
+              File wakeupFile = new File("./tmp/wakeup");
+              if ( wakeupFile.exists() ) {
+                  new MSClientSample(args).run();
+                  wakeupFile.delete();
+              }
+          } catch(Exception e) {};
+      }
+
+      System.exit(0);
    }
 
    public String action = "subscribe";
-   public String clientId = "IBMIoTClient"; 
+   public String clientIdPrefix = "IBMIoT"; 
+   public String clientId = null;
    public String userName = null;
    public String password = null;
-   public int throttleWaitMSec = 0;
-   public int count = 1;
+   public int throttleWaitMMin = 0;
+   public int count = 0;
    public String dataStoreDir = null;
    public String payload = "I love IBM IoT MessageSight Server.";
    public boolean persistence = false;
    public int qos = AT_MOST_ONCE;
    public boolean cleanSession = true;
-   public String serverURI = null;
+   public String serverURI = "tcp://127.0.0.1:1883";
    public String topicName = "/IoTSampleTopic";
    public boolean ssl = false;
    public boolean verbose = false;
@@ -296,7 +330,7 @@ public class MSClientSample implements Runnable {
             password = args[i];
          } else if ("-w".equalsIgnoreCase(args[i]) && (i + 1 < args.length)) {
             i++;
-            throttleWaitMSec = Integer.parseInt(args[i]);
+            throttleWaitMMin = Integer.parseInt(args[i]);
          } else {
             showUsage = true;
             comment = "Invalid Parameter:  " + args[i];
@@ -309,11 +343,12 @@ public class MSClientSample implements Runnable {
             dataStoreDir = System.getProperty("java.io.tmpdir");
 
          if (clientId == null) {
-            clientId = MqttClient.generateClientId();
+            clientId = clientIdPrefix + MqttClient.generateClientId();
             if (clientId.length() > 23) {
                // If the generated clientId is too long, then create one based on action and a
                // random number.
-               clientId = String.format("%s_%.0f", action, new Random(99999));
+               Random rand = new Random();
+               clientId = String.format("%s_%s_%d", clientIdPrefix, action, rand.nextInt(99999) + 1);
             }
          }
 
@@ -345,6 +380,27 @@ public class MSClientSample implements Runnable {
     * Primary MQTT client method that either publishes or subscribes messages on a topic
     */
    public void run() {
+
+      /* print Connect object */
+      println("ServerURI: " + serverURI);
+      println("ClientID: " + clientId);
+      println("Action: " + action);
+      println("Topic: " + topicName);
+
+      /* 
+       * Handle disconnected client demo case:
+       * Check if this is a publish or subscribe client for disconnected client demo. 
+       * The client id should be IBMIoT_disconPublisher or GetNotifClient
+       */
+      if ( clientId.equals("IBMIoT_disconPublisher")) {
+          System.out.println("This is a disconnected Publisher test client.");
+          disconnTestPublisher = 1;
+      }
+
+      if ( clientId.equals("GetNotifClient")) {
+          System.out.println("This is a disconnected Subscriber test client.");
+          disconnTestSubscriber = 1;
+      }
 
       try {
          if ("publish".equalsIgnoreCase(action)) {
