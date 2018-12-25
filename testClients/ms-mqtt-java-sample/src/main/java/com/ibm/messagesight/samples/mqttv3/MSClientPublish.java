@@ -139,14 +139,18 @@ public class MSClientPublish implements MqttCallback {
       stream.println("Client '" + client.getClientId() + "' ready to publish to topic: '" + config.topicName + "' with QOS " + config.qos + ".");
       long startTime = System.currentTimeMillis();
 
-      for (int i = 0; i < config.count; i++) {
-         if (config.verbose)
-            stream.println(i + ": Publishing \"" + message + "\" to topic " + config.topicName);
+      if (config.count == 0 && config.throttleWaitMMin == 0) config.throttleWaitMMin = 12;
+      if (config.count == 0 ) config.count = 99999999;
 
-         if (config.throttleWaitMSec > 0) {
+      stream.println("Client '" + client.getClientId() + "' publishing to topic: '" + topic.getName() + "' with QOS " + message.getQos() + ".");
+
+      for (int i = 0; i < config.count; i++) {
+         stream.println(i + ": Publishing \"" + message + "\" to topic " + config.topicName);
+
+         if (config.throttleWaitMMin > 0) {
             long currTime = System.currentTimeMillis();
             double elapsed = (double) (currTime - startTime);
-            double projected = ((double) i / (double) config.throttleWaitMSec) * 1000.0;
+            double projected = ((double) i / (double) config.throttleWaitMMin) * 60 * 1000.0;
             if (elapsed < projected) {
                double sleepInterval = projected - elapsed;
                try {
@@ -158,8 +162,6 @@ public class MSClientPublish implements MqttCallback {
          }
          // Publish the message
          MqttDeliveryToken token = topic.publish(message);
-         if (i == 0)
-            stream.println("Client '" + client.getClientId() + "' publishing to topic: '" + topic.getName() + "' with QOS " + message.getQos() + ".");
 
          // Wait until the message has been delivered to the server
          if (config.qos > 0)

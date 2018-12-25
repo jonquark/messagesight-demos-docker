@@ -18,6 +18,7 @@
 
 package com.ibm.messagesight.samples.mqttv3;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
@@ -34,6 +35,8 @@ public class MSClientSubscribe implements MqttCallback {
    MSClientSample config = null;
    boolean done = false;
    int receivedcount = 0;
+   int disconnTestSubscriber = 0;
+   int disconnNotifSubscriber = 0;
 
    /**
     * Callback invoked when the MQTT connection is lost
@@ -79,20 +82,25 @@ public class MSClientSubscribe implements MqttCallback {
       if (config.persistence)
          dataStore = new MqttDefaultFilePersistence(config.dataStoreDir);
 
+      if ( config.clientId.equals("GetNotifClient")) {
+          disconnTestSubscriber = 1;
+      }
+
+      if ( config.clientId.equals("MonitorNotifClient")) {
+          config.println("This is a disconnected client notification subscriber.");
+          disconnNotifSubscriber = 1;
+      }
+
       // MqttClient client = new MqttClient(config.serverURI, config.clientId, dataStore);
       MqttAsyncClient client = new MqttAsyncClient(config.serverURI, config.clientId, dataStore);
       client.setCallback(this);
 
       MqttConnectOptions options = new MqttConnectOptions();
 
-      // set CleanSession true to automatically remove server data associated
-      // with the client id at
-      // disconnect. In this sample the clientid is based on a random number and
-      // not typically
-      // reused, therefore the release of client's server side data on
-      // disconnect is appropriate.
+      // Set CleanSession
       options.setCleanSession(config.cleanSession);
       config.println("cleanSession: " + config.cleanSession);
+
       if (config.password != null) {
          options.setUserName(config.userName);
          options.setPassword(config.password.toCharArray());
@@ -139,61 +147,55 @@ public class MSClientSubscribe implements MqttCallback {
                 trustStorePassword = System.getProperty("javax.net.ssl.trustStorePassword");
         }
 
-         config.println("keyStore: "+ keyStore);
-         config.println("keyStorePasswd: "+ keyStorePassword);
-         config.println("trustStore: "+ trustStore);
-         config.println("trustStorePassword: "+ trustStorePassword);
+        config.println("keyStore: "+ keyStore);
+        config.println("keyStorePasswd: "+ keyStorePassword);
+        config.println("trustStore: "+ trustStore);
+        config.println("trustStorePassword: "+ trustStorePassword);
 
-         if (keyStore != null)
+        if (keyStore != null)
             sslClientProps.setProperty("com.ibm.ssl.keyStore", keyStore);
-         if (keyStorePassword != null)
+        if (keyStorePassword != null)
             sslClientProps.setProperty("com.ibm.ssl.keyStorePassword", keyStorePassword);
-         if (trustStore != null)
+        if (trustStore != null)
             sslClientProps.setProperty("com.ibm.ssl.trustStore", trustStore);
-         if (trustStorePassword != null)
+        if (trustStorePassword != null)
             sslClientProps.setProperty("com.ibm.ssl.trustStorePassword", trustStorePassword);
 
-         options.setSSLProperties(sslClientProps);
-      }
+        options.setSSLProperties(sslClientProps);
+     }
 
-      // KeepAliveInterval is set to 0 to keep the connection from timing out
-      options.setKeepAliveInterval(86400);
+     // KeepAliveInterval is set to 0 to keep the connection from timing out
+     options.setKeepAliveInterval(86400);
 
-      // client.connect(options);
+     try {
+         client.connect(options, null, new IMqttActionListener() {
+             @Override
+             public void onSuccess(IMqttToken iMqttToken) {
+                 System.out.println("Connected");
+             }
 
-          try {
-            client.connect(options, null, new IMqttActionListener() {
+             @Override
+             public void onFailure(IMqttToken iMqttToken, Throwable e) {
+                 System.out.println("Failed to connect");
+             }
+         }).waitForCompletion();
+     } catch (MqttException e) {
+         config.println("Failed to connect");
+     }
+
+     // Subscribe to the topic. messageArrived() callback invoked when message received.
+     try {
+          IMqttToken token = client.subscribe(config.topicName, config.qos, null, new IMqttActionListener() {
               @Override
               public void onSuccess(IMqttToken iMqttToken) {
-                System.out.println("Connected");
+                  System.out.println("Subscription passed");
               }
 
               @Override
               public void onFailure(IMqttToken iMqttToken, Throwable e) {
-                System.out.println("Failed to connect");
+                  System.out.println("Subscription failed");
               }
-            }).waitForCompletion();
-          } catch (MqttException e) {
-            config.println("Failed to connect");
-          }
-
-
-      // Subscribe to the topic. messageArrived() callback invoked when message
-      // received.
-      try {
-
-            IMqttToken token = client.subscribe(config.topicName, config.qos, null, new IMqttActionListener() {
-              @Override
-              public void onSuccess(IMqttToken iMqttToken) {
-                System.out.println("Subscription passed");
-              }
-
-              @Override
-              public void onFailure(IMqttToken iMqttToken, Throwable e) {
-                System.out.println("Subscription failed");
-              }
-            });
-
+          });
       } catch(MqttException e) {
           config.println("Subscription failed. RC: " + e.getReasonCode());
           config.println("Disconnect client");
@@ -205,15 +207,17 @@ public class MSClientSubscribe implements MqttCallback {
 
       // wait for messages to arrive before disconnecting
       try {
-         while (!isDone(null)) {
-            Thread.sleep(500);
-         }
+          while (!isDone(null)) {
+              Thread.sleep(500);
+          }
       } catch (InterruptedException e) {
-         e.printStackTrace();
+          e.printStackTrace();
       }
 
       // Disconnect the client
-      client.unsubscribe(config.topicName);
+      // Do not unsubscribe if this is a GetNotifClient (used for disconnected client notification)
+      if ( disconnTestSubscriber == 0 ) 
+          client.unsubscribe(config.topicName);
       client.disconnect();
 
       if (config.verbose)
@@ -238,9 +242,18 @@ public class MSClientSubscribe implements MqttCallback {
 
       // if all messages have been received then print message and set done
       // flag.
-      if (receivedcount == config.count) {
+      if (config.count > 0 && receivedcount == config.count) {
          config.println("Received " + config.count + " messages.");
          isDone(true);
+      }
+
+      // If this is a disconnected notification processing client, set wakeup file
+      if ( topic.equals("$SYS/DisconnectedClientNotification") ) {
+          if ( disconnNotifSubscriber == 1 ) {
+              /* touch a wakeup file */
+              File file = new File("./tmp/wakeup");
+              file.createNewFile();
+          }
       }
       
       return;
