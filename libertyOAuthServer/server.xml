@@ -30,62 +30,31 @@
     <applicationManager autoExpand="true"/>
 
     <basicRegistry id="basic" realm="customRealm">
-    <user name="test1" password="test1" />
-    <user name="test2" password="test2" />
-    <user name="test3" password="test3" />
-    <user name="test4" password="test4" />
-    <user name="test5" password="test5" />
-    <user name="test6" password="test6" />
-    <user name="test7" password="test7" />
-    <user name="test8" password="test8" />
-    <user name="test9" password="test9" />
-    <user name="test10" password="test10" />
+    <user name="MsgUser1" password="testPassw0rd" />
+    <user name="MsgUser2" password="testPassw0rd" />
+    <user name="MsgUser3" password="testPassw0rd" />
+    <user name="MsgUser4" password="testPassw0rd" />
+    <user name="MsgUser5" password="testPassw0rd" />
     <user name="test11" password="test11" />
     <user name="test12" password="test12" />
     <user name="test13" password="test13" />
     <user name="test14" password="test14" />
     <user name="test15" password="test15" />
-    <user name="test16" password="test16" />
-    <user name="test17" password="test17" />
-    <user name="test18" password="test18" />
-    <user name="test19" password="test19" />
-    <user name="test20" password="test20" />
-
-    <group name="testGroup0">
-        <member name="test1" />
-        <member name="test2" />
-        <member name="test3" />
-        <member name="test4" />
-        <member name="test5" />
-    </group>
 
     <group name="testGroup1">
-        <member name="test6" />
-        <member name="test7" />
-        <member name="test8" />
-        <member name="test9" />
-        <member name="test10" />
-    </group>
-
-    <group name="testGroup3">
         <member name="test11" />
         <member name="test12" />
         <member name="test13" />
+    </group>
+
+    <group name="testGroup2">
         <member name="test14" />
         <member name="test15" />
     </group>
 
-    <group name="testGroup4">
-        <member name="test16" />
-        <member name="test17" />
-        <member name="test18" />
-        <member name="test19" />
-        <member name="test20" />
-    </group>
-
     </basicRegistry>
 
-    <oauthProvider id="DemoProvider"
+    <oauthProvider id="DemoOAuthProvider"
        oauthOnly="false"
        grantType="authorization_code,password,refresh_token"
        libraryRef="myLib"
@@ -94,7 +63,7 @@
        mediatorClass-name="com.ibm.ws.security.oauth20.mediator.ResourceOwnerValidationMediator">
 
         <localStore>
-            <client name="LibertyRocks" secret="AndMakesConfigurationEasy"
+            <client name="wasLibertyClient" secret="testPassw0rd"
                 displayname="Test Client for OAuth"
                 redirect="http://127.0.0.1/oauthclient/redirect.jsp"
                 enabled="true">

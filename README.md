@@ -4,9 +4,28 @@
 This project contains scripts to setup IBM IoT MessageSight demo environment using IBM IoT MessageSight
 Server, WebUI, and Bridge containers, and other containers like OpenLDAP, OAuth, IBM MQ, SNMP trapd etc.
 
-You can build and run MessageSight containers and other required containers on any operating environment that has docker-ce (Docker Community Edition) environment set. For information on Docker Community Edition for your operating environment, see Docker Communit Edition.
+You can build and run MessageSight containers and other required containers on any operating environment 
+that has docker-ce (Docker Community Edition) environment set.  For information on Docker Community Edition 
+for your operating environment, see [About Docker CE](https://docs.docker.com/install/).
 
-The following scripts are provided to setup different demostration cases:
+## List of demo use cases
+
+| Feature | Available? | Description  |
+|---------|:----------:|:-------------|
+| External LDAP | Yes | Client authentication and messaging authorization using external LDAP server |
+| OAuth Authentication | Yes | Client authentication using OAuth server |
+| Client certificate | TBA | Client authentication using client certificates |
+| Disconnected Client Notification | Yes | Send notification to disconnected durable subscribers |
+| Subscription based Monitoring | Yes | Client to subscribe to monitoring statistics |
+| High Availability | TBA | Messaging demo in MessgeSight High Availability environment |
+| Cluster | TBA | Messaging demo using MessageSight cluster |
+| MQConnectivity | TBA | Messaging demo in MQ Connectivity environment |
+| MessageSight Bridge | TBA | Messaging demo in Messaging Bridge environment |
+| SNMP | TBA | Monitoring statistics using SNMP trapd |
+
+## Demo Configuration
+
+The following scripts are provided to setup different demostration use cases:
 
 1. configureNetworks.sh: Use this script to create docker networks used in different demo environment.
 
@@ -14,11 +33,11 @@ The following scripts are provided to setup different demostration cases:
 
 3. configureWebUI.sh: This script runs a MessageSight WebUI container.
 
-4. configureServer.sh: This script runs a MessageSight server container and configures the server to run demos.
+4. configureServer.sh: This script runs a MessageSight server container and other containers like openldap, oauthserver etc., and configures MessageSight server container to run demos.
 
 ### Prerequisite steps:
 
-1. Setup docker CE environment on a system where docker CE is supported. For information on Docker Community Edition for your operating environment, see [Docker Communit Edition](https://store.docker.com/search?q=Docker%20Community%20Edition&type=edition&offering=community).
+1. Setup docker CE environment on a system where docker CE is supported. For information on Docker Community Edition for your operating environment, see [About Docker CE](https://docs.docker.com/install/).
 
 2. Clone this project:
 ```
@@ -27,16 +46,13 @@ $ git clone https://github.com/ibm-watson-iot/messagesight-demos-docker
 
 3. To build docker images needed to run IBM IoT MessageSight demos, you need to download some prerequite packages. Create a directory named "pkgs" to keep the downloaded packages.
 
-4. Download IBM IoT MessageSight v5 install packages from [IBM IoT MessageSight v5](https://developer.ibm.com/iotplatform/2018/12/11/ibm-iot-messagesight-v5-announced/) and copy the files in the "pkgs" directory.
+4. Download IBM IoT MessageSight v5 install packages from [IBM IoT MessageSight V5](http://www-01.ibm.com/common/ssi/ShowDoc.wss?docURL=/common/ssi/rep_ca/4/899/ENUSLP18-0494/index.html&lang=en&request_locale=en) and copy the files in the "pkgs" directory. The free for-developers edition will be available soon. Refer to [IBM IoT MessageSight](https://www.ibm.com/developerworks/downloads/iot/messagesight/index.html) for details.
 
-5. Download WAS Liberty profile package from [IBM WAS Liberty Profile](https://developer.ibm.com/wasdev/downloads/#asset/runtimes-wlp-javaee8) and copy the zip file in the "pkgs" directory.
-
-6. The "pkgs" directory must contain the following files:
+5. The "pkgs" directory must contain the following files:
 ```
 IBMIoTMessageSightServer-5.0.0.0.20181127-1958.tz
 IBMIoTMessageSightBridge-5.0.0.0.20181127-1958.tz
 IBMIoTMessageSightWebUI-5.0.0.0.20181127-1958.tz
-wlp-javaee8-18.0.0.3.zip
 ```
 
 ### Build IBM IoT MessageSight docker images:
@@ -56,17 +72,47 @@ To remove MessageSight Server, WebUI, or Bridge container and image:
 $ ./buildMSImages.sh <server|webui|bridge> remove
 ```
 
-## Steps to configure MessageSight server container and run demos
-
-## Configure MessageSight Server for MessageSight demos
+### Configure MessageSight Server for demos
 
 Use the followimng command to run a MessageSight server container and configure the server to run demos.
 ```
 $ configureServer.sh 
 ```
 
-## Subscription based monitoring demo
+### Build IBM IoT MessageSight test java client
 
+To run the demos, you need to build MessageSight java client included in this project. To build the client code, you need Maven installed on your system. Refer to [Moven Getting started guide](https://maven.apache.org/guides/getting-started/index.html) for downloading and install instructions. Use the following commands to build MessageSight java test client:
+
+```
+$ cd testClients/ms-mqtt-java-sample
+$ mvn clean package
+```
+
+## Demo use case descriptions and run steps
+
+### External LDAP
+
+#### Demo environment details
+     ---- To be added ----
+
+#### Demo run steps
+     ---- To be added ----
+
+
+### OAuth authentication
+
+#### Demo environment details
+     ---- To be added ----
+
+#### Demo run steps
+     ---- To be added ----
+
+### Subscription based Monitoring
+
+#### Demo environment details
+     ---- To be added ----
+
+#### Demo run steps
 To get monitoring statistics, use ms-mqtt-java-sample to subscribe to monitoring statistics:
 ```
 $ ./target/ms-mqtt-java-sample -t "\$SYS/ResourceStatistics/+" -i MonitorClient -s tcp://127.0.0.1:16102
@@ -85,8 +131,12 @@ Subscription passed
 ...
 ```
 
-## Disconnected client demo
+## Disconnected Client Notification demo
 
+#### Demo environment details
+     ---- To be added ----
+
+#### Demo run steps
 For this demo, you need to start three shell windows and run the following commands in order:
 
 1. On window 1, start a subscriber to get disconnected client notifications
@@ -180,33 +230,30 @@ Published 5 messages to topic planets/earth
 
 ```
 
-
-
-#####################################################################
-
-TODO:   Add steps to configure and run other demos
-
-#####################################################################
-
 ## OAuth demo
-
+   *** TBA ***
 Client authentication using Liberty based OAuth server docker container.
-
+   *** TBA ***
 
 ## SNMP demo
 
 Client authentication using SNMP Trapd server docker container.
 
+   *** TBA ***
 
 ## MessageSight HA demo
 
+   *** TBA ***
 
 ## MessageSight Cluster demo
 
+   *** TBA ***
 
 ## MessageSight MQ Connectivity demo
 
+   *** TBA ***
 
 ## MessageSight Bridge demo
 
+   *** TBA ***
 

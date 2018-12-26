@@ -53,7 +53,7 @@
 # NOTE:
 # Openldap container requires docker netwrok ms-service-net. To create docker
 # network used for various MessageSight demo containsers this script will 
-# use script ../ConfigureDockerNetworks.sh (in the parent directory).
+# use script ../configureNetworks.sh (in the parent directory).
 #
 # 
 

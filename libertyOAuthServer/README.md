@@ -9,22 +9,17 @@ docker-ce (Docker Community Edition) environment set. For information on Docker 
 operating environment, see [Docker Communit Edition](https://store.docker.com/search?q=Docker%20Community%20Edition&type=edition&offering=community).
 Make sure that docker-ce deamon has minumum of 4 GiB of free memory for OAuth Server container.
 
-## Pre-requisite
+## Dependencies
 
-You need WAS Liberty profile package. You can download the package using the following link:
+The OAuth Server docker image is built from developers version of IBM Websphere-Liberty 
+docker image. For detail on Websphere-Liberty docker image refer to the following link:
 
-https://developer.ibm.com/wasdev/downloads/#asset/runtimes-wlp-javaee8
+https://hub.docker.com/_/websphere-liberty/
 
 
-## Build OAuth server docker container
+## Build, run or remove OAuth server docker image or container
 
-Copy downloaded WAS Liberty image *wlp-javaee8-18.0.0.3.zip* in ../pkgs directory.
-
-To build OAuth Server docker container, use script *oauthServer.sh*.
-
-```
-$ ./oauthServer.sh build
-```
+The script *oauthserver.sh* can be used to build, run or remove OAuth server container.
 
 By default OAuth server is configured to listen on all interfaces on the following ports:
 
@@ -37,18 +32,35 @@ The OAuth server is preconfigured to generate OAuth token and validate user acco
 The user name of these accounts are MsgUser1 .. MsgUser5
 The password of these user accounts are set to testPassw0rd
 
-## Run OAuth server docker container
+### How to build oauthserver docker image?
 
-To run container:
+Use the following command to build oauthserver docker image:
 ```
-$ ./oauthServer.sh run
+$ ./oauthserver.sh build
 ```
 
-## Remove OAuth server container and docker image
+### How to run oauthserver docker container?
 
-To remove any exiting oAuth server container and docker image:
+Use the following command to run oauthserver container:
 ```
-$ ./oauthServer.sh remove
+$ ./oauthserver.sh run
+```
+NOTES:
+* OAuthe server container uses ms-service-net docker subnet created by script ../configureNetworks.sh
+  and assigns IP address as 172.27.5.2 to oauthserver container.
+
+### How to remove oauthserver docker container?
+
+Use the following command to remove oauthserver container:
+```
+$ ./oauthserver.sh remove
+```
+
+### How to remove oauthserver docker image?
+
+Use the following command to remove oauthserver docker image:
+```
+$ ./oauthserver.sh remove image
 ```
 
 ## Test OAuth server
@@ -58,15 +70,21 @@ Note that in the example, username is test3 and password is test3.
 Substitute <ip_address_of_container_host> with the IP address of the container host. 
 
 ```
-curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
- -d "grant_type=password&client_id=LibertyRocks&client_secret=AndMakesConfigurationEasy&username=test3&password=test3" \
- https://<ip_address_of_container_host>:9443/oauth2/endpoint/DemoProvider/token
+curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d \
+ "grant_type=password&client_id=wasLibertyClient&client_secret=testPassw0rd&username=MsgUser1&password=testPassw0rd" \
+ https://<ip_address_of_container_host>:9443/oauth2/endpoint/DemoOAuthProvider/token
+
+Example:
+curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d \
+ "grant_type=password&client_id=wasLibertyClient&client_secret=testPassw0rd&username=MsgUser1&password=testPassw0rd" \
+ https://127.0.0.1:9443/oauth2/endpoint/DemoOAuthProvider/token
+
 ```
 
 The response from the OAuth server should look similar to the following response message:
 
 ```
-{"access_token":"XmrTondwbiUmTlR5zYo2gJE4XGnVUlVRtlaeHxxp","token_type":"Bearer","expires_in":7776000,"scope":"","refresh_token":"dvnAhvLwYiB9WYC6uksCqyNsaaZETHkEGE13upPjX2EwQEOdmX"}
+{"access_token":"xSfhHOk3nVs7EJIZwqBJHJqJNxfMa0wjLmNuVdR6","token_type":"Bearer","expires_in":7776000,"scope":"","refresh_token":"J5lontTS0dGKfFpAZwIzn33hodqqd44ReOshqfaMZkKZPYg16C"}
 ```
 
 ## OAuth Configuration in MessageSight 
@@ -82,7 +100,7 @@ Substitute <ip_address_of_container_host> with the IP address of the container h
 {    
   "OAuthProfile": {
     "<NameOfOAuthProfile>": {
-      "ResourceURL": "http://<ip_address_of_container_host>:9080/oauth2/endpoint/DemoProvider/token",
+      "ResourceURL": "http://<ip_address_of_container_host>:9080/oauth2/endpoint/DemoOAuthProvider/token",
       "KeyFileName": "",
       "AuthKey": "access_token",
       "UserInfoURL": "",
@@ -91,10 +109,27 @@ Substitute <ip_address_of_container_host> with the IP address of the container h
     } 
   }
 }
+
+Example:
+
+curl -X POST -k https://127.0.0.1:9089/ima/v1/configuration -d \
+  '{
+    "OAuthProfile": {
+      "TestOAuthProfile": {
+        "ResourceURL": "http://127.0.0.1:9080/oauth2/endpoint/DemoOAuthProvider/token",
+        "KeyFileName": "",
+        "AuthKey": "access_token",
+        "UserInfoURL": "",
+        "UserInfoKey": "",
+        "GroupInfoKey": ""
+      }
+    }
+  }'
+
 ```
 
 For details on the REST call, refer to [Create or update an OAuth profile](https://www.ibm.com/support/knowledgecenter/en/SSWMAJ_2.0.0/com.ibm.ism.doc/Reference/SecurityCmd/cmd_create_update_oauth.html)
 
-You can also use IBM MessageSight v2.0 WebUI to configure OAuthProfile object.
+You can also use IBM MessageSight v5.0 WebUI to configure OAuthProfile object.
 
 
