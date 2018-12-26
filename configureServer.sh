@@ -45,6 +45,11 @@
 #   $ cd openLDAPServer
 #   $ ./openldap.sh build
 #
+# - Build Liberty based OAuth Server docker image (oauthserver:1.0) in local registry
+#   To build OAuth Server image:
+#   $ cd libertyOAuthServer
+#   $ ./oauthServer.sh build
+#
 #
 
 # 
@@ -182,20 +187,30 @@ fi
 cd $CURDIR
 
 #
-# Create containers
+# Run containers
 #
 if [ $inited -eq 0 ]
 then
     #
-    # Create LDAP Container if not created yet
+    # Run LDAP Container if not created yet
     #
-    echo "Check and create openldap container"
+    echo "Check and run openldap container"
     cd openLDAPServer
     ./openldap.sh run
     echo "Connect docker network ms-server1-net to the container"
     sudo docker network connect ms-server1-net openldap
     echo "Wait for some time for LDAP server to configure and start properly"
     sleep 10
+    cd $CURDIR
+
+    #
+    # Run OAuth Server Container if not created yet
+    #
+    echo "Check and run oauthserver container"
+    cd libertyOAuthServer
+    ./oauthserver.sh run
+    echo "Connect docker network ms-server1-net to the container"
+    sudo docker network connect ms-server1-net oauthserver
     cd $CURDIR
 
     #
@@ -314,7 +329,7 @@ echo "Configure OAuth profile"
 curl -X POST http://127.0.0.1:9089/ima/v1/configuration -d \
   '{"OAuthProfile": {
     "TestOAuthProfile": {
-      "ResourceURL": "http://172.27.5.2:9080/oauth2/endpoint/DemoProvider/token",
+      "ResourceURL": "http://172.27.5.2:9080/oauth2/endpoint/DemoOAuthProvider/token",
       "KeyFileName": "",
       "AuthKey": "access_token",
       "UserInfoURL": "",

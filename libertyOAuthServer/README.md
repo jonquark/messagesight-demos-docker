@@ -17,15 +17,9 @@ docker image. For detail on Websphere-Liberty docker image refer to the followin
 https://hub.docker.com/_/websphere-liberty/
 
 
-## Build OAuth server docker container
+## Build, run or remove OAuth server docker image or container
 
-The script *oauthServer.sh* can be used to build, run or remove OAuth server container.
-
-To build OAuth Server docker container, use script *oauthServer.sh*.
-
-```
-$ ./oauthServer.sh build
-```
+The script *oauthserver.sh* can be used to build, run or remove OAuth server container.
 
 By default OAuth server is configured to listen on all interfaces on the following ports:
 
@@ -38,18 +32,35 @@ The OAuth server is preconfigured to generate OAuth token and validate user acco
 The user name of these accounts are MsgUser1 .. MsgUser5
 The password of these user accounts are set to testPassw0rd
 
-## Run OAuth server docker container
+### How to build oauthserver docker image?
 
-To run container:
+Use the following command to build oauthserver docker image:
 ```
-$ ./oauthServer.sh run
+$ ./oauthserver.sh build
 ```
 
-## Remove OAuth server container and docker image
+### How to run oauthserver docker container?
 
-To remove any exiting oAuth server container and docker image:
+Use the following command to run oauthserver container:
 ```
-$ ./oauthServer.sh remove
+$ ./oauthserver.sh run
+```
+NOTES:
+* OAuthe server container uses ms-service-net docker subnet created by script ../configureNetworks.sh
+  and assigns IP address as 172.27.5.2 to oauthserver container.
+
+### How to remove oauthserver docker container?
+
+Use the following command to remove oauthserver container:
+```
+$ ./oauthserver.sh remove
+```
+
+### How to remove oauthserver docker image?
+
+Use the following command to remove oauthserver docker image:
+```
+$ ./oauthserver.sh remove image
 ```
 
 ## Test OAuth server
