@@ -1,33 +1,40 @@
+#!/bin/bash
 #
-#****************************************************************
-# Licensed Materials - Property of IBM
-# 5725-S17 IBM MessageSight
-# (C) Copyright IBM Corp. 2018.  All Rights Reserved.
+#*******************************************************************************
+# Copyright (c) 2017-2018 IBM Corp.
 #
-# US Government Users Restricted Rights - Use, duplication or
-# disclosure restricted by GSA ADP Schedule Contract with
-# IBM Corp.
-#****************************************************************
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# and Eclipse Distribution License v1.0 which accompany this distribution.
 #
-################################################
-#   This script is for internal IBM use only
-################################################
+# The Eclipse Public License is available at
+#    http://www.eclipse.org/legal/epl-v10.html
+# and the Eclipse Distribution License is available at
+#   http://www.eclipse.org/org/documents/edl-v10.php.
 #
-# Dockerfile to build WAS-Liberty based OAuth Server
+#
+# Contrinutors:
+#    Ranjan Dasgupta         - Initial drop
+#
+#*******************************************************************************
 #
 
-FROM centos:latest
+#
+# ==============================================================================
+#    THIS DOCKERFILE IS PROVIDED TO BUILD A WAS-LIBERTY BASED OAUTH SERVER 
+#    FOR MESSAGESIGHT DEMO ENVIRONMENT.
+# ==============================================================================
+#
 
-WORKDIR /opt/ibm/wlp/bin
 
-COPY ./download/wlp-javaee8-18.0.0.3.zip /tmp/
-COPY ./server.xml /tmp/
-COPY ./oauth2.jks /tmp/
-COPY ./buildServer.sh /tmp/
-COPY ./run.sh /bin/
+#
+# Dockerfile to build an OAuth Server using developers version of 
+# IBM Websphere Liberty docker container image.
+# For reference, refer to the following link:
+# https://hub.docker.com/_/websphere-liberty/
+#
 
-RUN /tmp/buildServer.sh
-
-ENTRYPOINT ["/bin/run.sh"]
-
+FROM websphere-liberty:webProfile8
+COPY --chown=1001:0  server.xml /config/
+RUN installUtility install --acceptLicense defaultServer
 
