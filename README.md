@@ -97,4 +97,11 @@ For demo environment details and how to run the demos, refer to the following li
 - [Client certificate](./demodocs/certs.md)
 - [Disconnected Client Notification](./demodocs/disconNotif.md)
 - [Subscription based Monitoring](./demodocs/externalMonitoring.md)
+- [High Availability](./demodocs/ha.md)
+- [Cluster](./demodocs/cluster.md)
+- [MQ Connectivity](./demodocs/mqcon.md)
+- [MessageSight Bridge](./demodocs/bridge.md)
+- [SNMP](./demodocs/snmp.md)
+
+
 

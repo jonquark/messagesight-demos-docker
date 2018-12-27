@@ -113,4 +113,7 @@ Published 5 messages to topic planets/earth
 
 For more information, you can refer to the following links:
 
+- [Disconnected client notifications](https://www.ibm.com/support/knowledgecenter/SSWMAJ_5.0.0/com.ibm.ism.doc/Overview/ov00140_.html)
+- [Configuring disconnected client notifications](https://www.ibm.com/support/knowledgecenter/SSWMAJ_5.0.0/com.ibm.ism.doc/Administering/ad00850_.html)
+
 

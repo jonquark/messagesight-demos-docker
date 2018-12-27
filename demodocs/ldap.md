@@ -16,10 +16,13 @@ To showcase this use case, following docker containers and test clients are used
 
 ### Demo Run steps
 
-
+---- To be added ----
 
 
 ### IBM IoT MessageSight knowledge center references:
 
 For more information, you can refer to the following links:
+
+- [Configuring LDAP for user authentication](https://www.ibm.com/support/knowledgecenter/SSWMAJ_5.0.0/com.ibm.ism.doc/Administering/ad00370_.html)
+
 
