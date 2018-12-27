@@ -90,170 +90,18 @@ $ mvn clean package
 
 ## Demo use case descriptions and run steps
 
-### External LDAP
+For demo environment details and how to run the demos, refer to the following links:
 
-#### Demo environment details
-     ---- To be added ----
+- [External LDAP](./demodocs/ldap.md)
+- [OAuth Authentication](./demodocs/oauth.md)
+- [Client certificate](./demodocs/certs.md)
+- [Disconnected Client Notification](./demodocs/disconNotif.md)
+- [Subscription based Monitoring](./demodocs/externalMonitoring.md)
+- [High Availability](./demodocs/ha.md)
+- [Cluster](./demodocs/cluster.md)
+- [MQ Connectivity](./demodocs/mqcon.md)
+- [MessageSight Bridge](./demodocs/bridge.md)
+- [SNMP](./demodocs/snmp.md)
 
-#### Demo run steps
-     ---- To be added ----
 
-
-### OAuth authentication
-
-#### Demo environment details
-     ---- To be added ----
-
-#### Demo run steps
-     ---- To be added ----
-
-### Subscription based Monitoring
-
-#### Demo environment details
-     ---- To be added ----
-
-#### Demo run steps
-To get monitoring statistics, use ms-mqtt-java-sample to subscribe to monitoring statistics:
-```
-$ ./target/ms-mqtt-java-sample -t "\$SYS/ResourceStatistics/+" -i MonitorClient -s tcp://127.0.0.1:16102
-
-018-12-24 21:57:08.535 ServerURI: tcp://127.0.0.1:16102
-2018-12-24 21:57:08.542 ClientID: MonitorClient
-2018-12-24 21:57:08.542 Action: subscribe
-2018-12-24 21:57:08.542 Topic: $SYS/ResourceStatistics/+
-2018-12-24 21:57:08.596 cleanSession: true
-Connected
-2018-12-24 21:57:08.629 Client 'MonitorClient' subscribed to topic: '$SYS/ResourceStatistics/+' with QOS 0.
-Subscription passed
-2018-12-24 21:57:09.297 Message 1 received on topic '$SYS/ResourceStatistics/Memory':  { "Version":"5.0.0.0","NodeName":"9d2d549648d8","TimeStamp":"2018-12-25T03:57:09.327Z","ObjectType":"Memory", "MemoryTotalBytes":4294967296, "MemoryFreeBytes":3462549504, "MemoryFreePercent":81, "ServerVirtualMemoryBytes":2903527424, "ServerResidentSetBytes":826109952, "MessagePayloads":2097152, "PublishSubscribe":15728024, "Destinations":8920568, "CurrentActivity":16781312, "ClientStates":1572624 }
-2018-12-24 21:57:09.297 Message 2 received on topic '$SYS/ResourceStatistics/Store':  { "Version":"5.0.0.0","NodeName":"9d2d549648d8","TimeStamp":"2018-12-25T03:57:09.330Z","ObjectType":"Store","DiskUsedPercent":59,"DiskFreeBytes":52350828937216,"MemoryUsedPercent":2,"MemoryTotalBytes":268434944,"Pool1TotalBytes":187904512,"Pool1UsedBytes":0,"Pool1UsedPercent":0,"Pool1RecordsLimitBytes":93952256,"Pool1RecordsUsedBytes":0,"Pool2TotalBytes":80530432,"Pool2UsedBytes":5378048,"Pool2UsedPercent":6 }
-...
-...
-```
-
-## Disconnected Client Notification demo
-
-#### Demo environment details
-     ---- To be added ----
-
-#### Demo run steps
-For this demo, you need to start three shell windows and run the following commands in order:
-
-1. On window 1, start a subscriber to get disconnected client notifications
-```
-$ ./target/ms-mqtt-java-sample -t "\$SYS/DisconnectedClientNotification" -i MonitorNotifClient -s tcp://127.0.0.1:16102
-
-Output:
-2018-12-25 07:56:03.14 ServerURI: tcp://127.0.0.1:16102
-2018-12-25 07:56:03.146 ClientID: MonitorNotifClient
-2018-12-25 07:56:03.146 Action: subscribe
-2018-12-25 07:56:03.146 Topic: $SYS/DisconnectedClientNotification
-2018-12-25 07:56:03.148 This is a disconnected client notification subscriber.
-2018-12-25 07:56:03.196 cleanSession: true
-Connected
-2018-12-25 07:56:03.224 Client 'MonitorNotifClient' subscribed to topic: '$SYS/DisconnectedClientNotification' with QOS 0.
-Subscription passed
-2018-12-25 07:57:07.517 Message 1 received on topic '$SYS/DisconnectedClientNotification':  {"ClientId":"GetNotifClient","MessagesArrived":[{"TopicString":"planets/earth","MessageCount":5}]}
-
-```
-
-2. On windows 2, start a durable subscriber and subscribe to topic "planets/earth"
-```
-$ ./target/ms-mqtt-java-sample -i "GetNotifClient" -t "planets/earth" -c false -a subscribe -n 5
-
-Output:
-2018-12-25 07:56:07.439 ServerURI: tcp://127.0.0.1:1883
-2018-12-25 07:56:07.446 ClientID: GetNotifClient
-2018-12-25 07:56:07.446 Action: subscribe
-2018-12-25 07:56:07.446 Topic: planets/earth
-This is a disconnected Subscriber test client.
-2018-12-25 07:56:07.491 cleanSession: false
-Connected
-2018-12-25 07:56:07.54 Client 'GetNotifClient' subscribed to topic: 'planets/earth' with QOS 0.
-Subscription passed
-2018-12-25 07:56:11.87 Message 1 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:56:11.87 Message 2 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:56:11.87 Message 3 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:56:11.87 Message 4 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:56:11.87 Message 5 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:56:11.87 Received 5 messages.
-Disconnected Test Client: Wakeup and resubscribe if wakeup file is set.
-2018-12-25 07:57:22.046 ServerURI: tcp://127.0.0.1:1883
-2018-12-25 07:57:22.046 ClientID: GetNotifClient
-2018-12-25 07:57:22.046 Action: subscribe
-2018-12-25 07:57:22.046 Topic: planets/earth
-This is a disconnected Subscriber test client.
-2018-12-25 07:57:22.046 cleanSession: false
-Connected
-2018-12-25 07:57:22.056 Client 'GetNotifClient' subscribed to topic: 'planets/earth' with QOS 0.
-2018-12-25 07:57:22.056 Message 1 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:57:22.056 Message 2 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:57:22.057 Message 3 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:57:22.057 Message 4 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:57:22.057 Message 5 received on topic 'planets/earth':  I love IBM IoT MessageSight Server.
-2018-12-25 07:57:22.057 Received 5 messages.
-
-```
- 
-3. On window 3, start a publisher for to publish messages on topic "planets/earth"
-```
-$ ./target/ms-mqtt-java-sample -i "IBMIoT_disconPublisher" -t "planets/earth" -a publish -n 5
-
-Output:
-2018-12-25 07:56:11.786 ServerURI: tcp://127.0.0.1:1883
-2018-12-25 07:56:11.792 ClientID: IBMIoT_disconPublisher
-2018-12-25 07:56:11.792 Action: publish
-2018-12-25 07:56:11.792 Topic: planets/earth
-This is a disconnected Publisher test client.
-Client 'IBMIoT_disconPublisher' ready to publish to topic: 'planets/earth' with QOS 0.
-Client 'IBMIoT_disconPublisher' publishing to topic: 'planets/earth' with QOS 0.
-0: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-1: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-2: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-3: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-4: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-Published 5 messages to topic planets/earth
-Disconnected Test Client: Republish messages after 30 seconds
-2018-12-25 07:56:41.873 ServerURI: tcp://127.0.0.1:1883
-2018-12-25 07:56:41.873 ClientID: IBMIoT_disconPublisher
-2018-12-25 07:56:41.873 Action: publish
-2018-12-25 07:56:41.873 Topic: planets/earth
-This is a disconnected Publisher test client.
-Client 'IBMIoT_disconPublisher' ready to publish to topic: 'planets/earth' with QOS 0.
-Client 'IBMIoT_disconPublisher' publishing to topic: 'planets/earth' with QOS 0.
-0: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-1: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-2: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-3: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-4: Publishing "I love IBM IoT MessageSight Server." to topic planets/earth
-Published 5 messages to topic planets/earth
-
-```
-
-## OAuth demo
-   *** TBA ***
-Client authentication using Liberty based OAuth server docker container.
-   *** TBA ***
-
-## SNMP demo
-
-Client authentication using SNMP Trapd server docker container.
-
-   *** TBA ***
-
-## MessageSight HA demo
-
-   *** TBA ***
-
-## MessageSight Cluster demo
-
-   *** TBA ***
-
-## MessageSight MQ Connectivity demo
-
-   *** TBA ***
-
-## MessageSight Bridge demo
-
-   *** TBA ***
 
