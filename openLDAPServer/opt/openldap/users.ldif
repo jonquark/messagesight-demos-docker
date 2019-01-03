@@ -100,14 +100,23 @@ objectClass: top
 cn: MsgGroup1
 member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
 member: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
-member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
 
 dn: cn=MsgGroup2,ou=groups,ou=MessageSight,o=IBM
 objectClass: groupOfNames
 objectClass: top
 cn: MsgGroup2
 member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
 member: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
 member: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
 
+dn: cn=AllAuthenticatedUsers,ou=groups,ou=MessageSight,o=IBM
+objectClass: groupOfNames
+objectClass: top
+cn: AllAuthenticatedUsers
+member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
 

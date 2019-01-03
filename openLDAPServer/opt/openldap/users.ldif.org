@@ -52,7 +52,7 @@ objectClass: top
 cn: MsgUser1
 sn: MsgUser1
 uid: MsgUser1
-userPassword: msDemoPassw0rd
+userPassword: testPassw0rd
 
 dn: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
 objectClass: inetOrgPerson
@@ -62,7 +62,7 @@ objectClass: top
 cn: MsgUser2
 sn: MsgUser2
 uid: MsgUser2
-userPassword: msDemoPassw0rd
+userPassword: testPassw0rd
 
 dn: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
 objectClass: inetOrgPerson
@@ -72,7 +72,7 @@ objectClass: top
 cn: MsgUser3
 sn: MsgUser3
 uid: MsgUser3
-userPassword: msDemoPassw0rd
+userPassword: testPassw0rd
 
 dn: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
 objectClass: inetOrgPerson
@@ -82,7 +82,7 @@ objectClass: top
 cn: MsgUser4
 sn: MsgUser4
 uid: MsgUser4
-userPassword: msDemoPassw0rd
+userPassword: testPassw0rd
 
 dn: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
 objectClass: inetOrgPerson
@@ -92,7 +92,7 @@ objectClass: top
 cn: MsgUser5
 sn: MsgUser5
 uid: MsgUser5
-userPassword: msDemoPassw0rd
+userPassword: testPassw0rd
 
 dn: cn=MsgGroup1,ou=groups,ou=MessageSight,o=IBM
 objectClass: groupOfNames
@@ -100,14 +100,23 @@ objectClass: top
 cn: MsgGroup1
 member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
 member: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
-member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
 
 dn: cn=MsgGroup2,ou=groups,ou=MessageSight,o=IBM
 objectClass: groupOfNames
 objectClass: top
 cn: MsgGroup2
 member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
 member: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
 member: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
 
+dn: cn=AllAuthenticatedUsers,ou=groups,ou=MessageSight,o=IBM
+objectClass: groupOfNames
+objectClass: top
+cn: AllAuthenticatedUsers
+member: cn=MsgUser1,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser2,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser3,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser4,ou=users,ou=MessageSight,o=IBM
+member: cn=MsgUser5,ou=users,ou=MessageSight,o=IBM
 

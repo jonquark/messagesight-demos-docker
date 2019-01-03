@@ -9,7 +9,7 @@ docker-ce (Docker Community Edition) environment set. For information on Docker 
 operating environment, see [Docker Communit Edition](https://store.docker.com/search?q=Docker%20Community%20Edition&type=edition&offering=community).
 Make sure that docker-ce deamon has minumum of 2 GiB of free memory for open LDAP container.
 
-To build and run open LDAP docker container, use openldapDocker.sh script.
+To build and run open LDAP docker container, use openldap.sh script.
 This script will create the following docker image:
 ```
 Name: openldap
@@ -24,12 +24,13 @@ The openldap server is preconfigured to create a set of groups and users that
 can be used in configured policies in IBM IoT MessageSight server:
 
 ```
-Group: MsgGroup1   Users: MsgUser1, MsgUser2, MsgUser3
-Group: MsgGroup2   Users: MsgUser1, MsgUser4, MsgUser5
+Group: MsgGroup1               Users: msgUser1, msgUser2
+Group: MsgGroup2               Users: msgUser1, msgUser3, msgUser4, msgUser5
+Group: AllAuthenticatedUsers   Users: msgUser1, msgUser2, msgUser3, msgUser4, msgUser5
 ```
 
 The openldap server bind password is set to msDemoPassw0rd.
-To change the password, edit the value of BINDPASSWD variable in *openldapDocker.sh*
+To change the password, edit the value of BINDPASSWD variable in *openldap.sh*
 script.
 
 By default the user MsgUser1 ... MsgUser5 password is set to testPassw0rd.
@@ -86,7 +87,7 @@ You can use the following object configuration data in the payload of POST metho
     "BindDN": "cn=Manager,o=IBM",
     "BindPassword": "msDemoPassw0rd",
     "UserSuffix": "ou=users,ou=MessageSight,o=IBM",
-    "GroupSuffix": "ou=groups,ou=MessageSight,o=ibm",
+    "GroupSuffix": "ou=groups,ou=MessageSight,o=IBM",
     "UserIdMap": "*:cn",
     "GroupIdMap": "*:cn",
     "GroupMemberIdMap": "member"
@@ -109,30 +110,25 @@ You can also use IBM MessageSight WebUI to configure external LDAP object.
 You can use the following users and groups for MessageSight messaging test:
 
 ```
-User Name: MsgUser1
+User Name: msgUser1
 Password:  testPassw0rd
-Member of Group: MsgGroup1
-Member of Group: MsgGroup2
+Member of Group: msgGroup1, msgGroup2 & AllAuthenticatedUsers
 
-
-User Name: MsgUser2
+User Name: msgUser2
 Password:  testPassw0rd
-Member of Group: MsgGroup1
+Member of Group: msgGroup1 & AllAuthenticatedUsers
 
-
-User Name: MsgUser3
+User Name: msgUser3
 Password:  testPassw0rd
-Member of Group: MsgGroup1
+Member of Group: msgGroup2 & AllAuthenticatedUsers
 
-
-User Name: MsgUser4
+User Name: msgUser4
 Password:  testPassw0rd
-Member of Group: MsgGroup2
+Member of Group: msgGroup2 & AllAuthenticatedUsers
 
-
-User Name: MsgUser5
+User Name: msgUser5
 Password:  testPassw0rd
-Member of Group: MsgGroup2
+Member of Group: msgGroup2 & AllAuthenticatedUsers
 
 ```
 
