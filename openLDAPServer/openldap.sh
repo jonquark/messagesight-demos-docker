@@ -156,11 +156,11 @@ function build_image() {
         rm -f slapd.conf.bak
     fi
 
-    if [ "${USERPASSWD}" != "msDemoPassw0rd" ]
+    if [ "${USERPASSWD}" != "testPassw0rd" ]
     then
         cd ${CURDIR}/opt/openldap
         cp users.ldif.org users.ldif
-        sed -i'.bak' -e 's/msDemoPassw0rd/'${USERPASSWD}'/g' users.ldif
+        sed -i'.bak' -e 's/testPassw0rd/'${USERPASSWD}'/g' users.ldif
         rm -f users.ldif.bak
     fi
 
