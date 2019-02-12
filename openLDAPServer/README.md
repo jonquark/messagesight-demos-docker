@@ -90,7 +90,7 @@ You can use the following object configuration data in the payload of POST metho
     "GroupSuffix": "ou=groups,ou=MessageSight,o=IBM",
     "UserIdMap": "*:cn",
     "GroupIdMap": "*:cn",
-    "GroupMemberIdMap": "member"
+    "GroupMemberIdMap": "member",
     "IgnoreCase": true,
     "Timeout": 10,
     "EnableCache": true,
