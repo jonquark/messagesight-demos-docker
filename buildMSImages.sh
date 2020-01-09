@@ -28,17 +28,17 @@
 
 #
 # This script can be used to build following docker images for 
-# IBM IoT MessageSight 5.0.0 demos:
+# IBM IoT MessageGateway 5.0.0 demos:
 #
-# - MessageSight Server 
+# - MessageGateway Server 
 #   docker image name: imaserver
 #   docker image version: 5.0
 #
-# - MessageSight WebUI
+# - MessageGateway WebUI
 #   docker image name: imawebui
 #   docker image version: 5.0
 #
-# - MessageSight Bridge
+# - MessageGateway Bridge
 #   docker image name: imabridge
 #   docker image version: 5.0
 #
@@ -50,12 +50,12 @@
 #
 # - Create a directory pkgs
 #
-# - Download the latest install images of IBM MessageSight Server, WebUI, and Bridge
+# - Download the latest install images of IBM MessageGateway Server, WebUI, and Bridge
 #   from IBM FixCentral or Pasport advantage and copy the files in the pkgs directory.
 #
-SERVER_IMAGE_NAME="IBMIoTMessageSightServer-5.0.0.0.20181127-1958.tz"
-WEBUI_IMAGE_NAME="IBMIoTMessageSightWebUI-5.0.0.0.20181127-1958.tz"
-BRIDGE_IMAGE_NAME="IBMIoTMessageSightBridge-5.0.0.0.20181127-1958.tz"
+SERVER_IMAGE_NAME="IBMWIoTPMessageGatewayServer-5.0.0.2.20200107-2200.tz"
+WEBUI_IMAGE_NAME="IBMWIoTPMessageGatewayWebUI-5.0.0.2.20200107-2200.tz"
+BRIDGE_IMAGE_NAME="IBMWIoTPMessageGatewayBridge-5.0.0.2.20200107-2200.tz"
 
 CURDIR=`pwd`
 export CURDIR
@@ -68,7 +68,7 @@ REMOVE=$2
 
 function usage() {
     echo
-    echo "$0: Creates or removes MessageSight Server, WebUI, and/or Bridge docker images."
+    echo "$0: Creates or removes MessageGateway Server, WebUI, and/or Bridge docker images."
     echo "ERROR: Invalid option(s) are spcified: ${SERVERTYPE}, ${REMOVE}"
     echo "USAGE: $0 <server|webui|bridge|all> [remove]"
     echo
@@ -87,7 +87,7 @@ if [ ! -f ${PKGDIR}/${SERVER_IMAGE_NAME} ] || [ ! -f ${PKGDIR}/${WEBUI_IMAGE_NAM
 then
     echo
     echo "ERROR: Required packages for the build to complete are not available."
-    echo "       Download the latest install images of IBM MessageSight Server, WebUI, and Bridge"
+    echo "       Download the latest install images of IBM MessageGateway Server, WebUI, and Bridge"
     echo "       from IBM FixCentral or Pasport advantage and copy the files in the pkgs directory."
     echo
     exit 1
@@ -111,21 +111,21 @@ then
     then
         if [ $buildExist -eq 1 ]
         then
-            echo "Removing MessageSight Server docker image."
+            echo "Removing MessageGateway Server docker image."
             docker rmi -f imaserver:5.0
         else
-            echo "MessageSight Server docker image doesn't exist."
+            echo "MessageGateway Server docker image doesn't exist."
         fi
     else
         if [ $buildExist -eq 1 ]
         then
-            echo "MessageSight Server docker image already exists."
+            echo "MessageGateway Server docker image already exists."
         else
-            echo "Building MessageSight Server docker image"
+            echo "Building MessageGateway Server docker image"
             mkdir -p ${CURDIR}/mstmpdir/server
             cd ${CURDIR}/mstmpdir/server
             tar zxf ${PKGDIR}/${SERVER_IMAGE_NAME}
-            cp IBMIoTMessageSightServer-*.rpm imaserver.rpm
+            cp IBMIoTMessageGatewayServer-*.rpm imaserver.rpm
             sudo docker build --force-rm=true -t imaserver:5.0 .
         fi
     fi
@@ -148,21 +148,21 @@ then
     then
         if [ $buildExist -eq 1 ]
         then
-            echo "Removing MessageSight WebUI docker image."
+            echo "Removing MessageGateway WebUI docker image."
             docker rmi -f imawebui:5.0
         else
-            echo "MessageSight WebUI docker image doesn't exist."
+            echo "MessageGateway WebUI docker image doesn't exist."
         fi 
     else
         if [ $buildExist -eq 1 ]
         then
-            echo "MessageSight WebUI docker image already exists."
+            echo "MessageGateway WebUI docker image already exists."
         else
-            echo "Building MessageSight WebUI docker image."
+            echo "Building MessageGateway WebUI docker image."
             mkdir -p ${CURDIR}/mstmpdir/webui
             cd ${CURDIR}/mstmpdir/webui
             tar zxf ${PKGDIR}/${WEBUI_IMAGE_NAME}
-            cp IBMIoTMessageSightWebUI-*.rpm imawebui.rpm
+            cp IBMIoTMessageGatewayWebUI-*.rpm imawebui.rpm
             sudo docker build --force-rm=true -t imawebui:5.0 .
         fi
     fi
@@ -185,21 +185,21 @@ then
     then
         if [ $buildExist -eq 1 ]
         then
-            echo "Removing MessageSight Bridge docker image."
+            echo "Removing MessageGateway Bridge docker image."
             docker rmi -f imabridge:5.0
         else
-            echo "MessageSight Bridge docker image doesn't exist."
+            echo "MessageGateway Bridge docker image doesn't exist."
         fi
     else
         if [ $buildExist -eq 1 ]
         then
-            echo "MessageSight Bridge docker image already exists"
+            echo "MessageGateway Bridge docker image already exists"
         else
-            echo "Buildiing MessageSight Bridge docker image"
+            echo "Buildiing MessageGateway Bridge docker image"
             mkdir -p ${CURDIR}/mstmpdir/bridge
             cd ${CURDIR}/mstmpdir/bridge
             tar zxf ${PKGDIR}/${BRIDGE_IMAGE_NAME}
-            cp IBMIoTMessageSightBridge-*.rpm imabridge.rpm
+            cp IBMIoTMessageGatewayBridge-*.rpm imabridge.rpm
             sudo docker build --force-rm=true -t imabridge:5.0 .
         fi
     fi

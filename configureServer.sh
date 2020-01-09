@@ -224,7 +224,7 @@ then
     #
     echo "Create imaserver1 container"
     sudo docker run --cap-add SYS_ADMIN \
-        --env-file=${CURDIR}/mstmpdir/server/IBMIoTMessageSightServer-docker.env \
+        --env-file=${CURDIR}/mstmpdir/server/imaserver-docker.env \
         --net ms-server1-net \
         --publish 16102:16102 --publish 9089:9089 --publish 1883:1883 --publish 8883:8883 \
         --volume ${MAPVOL}/imaserver1/var/messagesight:/var/messagesight \
