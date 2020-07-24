@@ -132,4 +132,14 @@ For details on the REST call, refer to [Create or update an OAuth profile](https
 
 You can also use IBM MessageSight v5.0 WebUI to configure OAuthProfile object.
 
+## Send Test Message
+
+```
+$ OAUTH_TOKEN=$(curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d \
+ "grant_type=password&client_id=wasLibertyClient&client_secret=testPassw0rd&username=MsgUser1&password=testPassw0rd" \
+ https://127.0.0.1:9443/oauth2/endpoint/DemoOAuthProvider/token)
+
+$ mosquitto_pub -h 127.0.0.1 -p 9883 -i "clientGroupA" -u "IMA_OAUTH_ACCESS_TOKEN" -P '${OAUTH_TOKEN}' -t demoTopic -q 2 -m "This is a Test Message"
+
+```
 

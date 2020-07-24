@@ -69,9 +69,9 @@ fi
 # Use docker network ms-webui-net
 #
 echo "Create imawebui container"
-sed -i'.bak' -e 's/127.0.0.1/0.0.0.0/g' ${CURDIR}/mstmpdir/webui/IBMIoTMessageSightWebUI-docker.env
+sed -i'.bak' -e 's/127.0.0.1/0.0.0.0/g' ${CURDIR}/mstmpdir/webui/imawebui-docker.env
 sudo docker run --cap-add SYS_ADMIN \
-    --env-file=${CURDIR}/mstmpdir/webui/IBMIoTMessageSightWebUI-docker.env \
+    --env-file=${CURDIR}/mstmpdir/webui/imawebui-docker.env \
     --net ms-server1-net --ip 172.25.5.1 --publish 9087:9087 \
     --detach --memory 2G --interactive --tty --name imawebui imawebui:5.0
 

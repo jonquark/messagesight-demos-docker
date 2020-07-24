@@ -1,7 +1,6 @@
-#!/bin/bash
 #
 #*******************************************************************************
-# Copyright (c) 2017-2018 IBM Corp.
+# Copyright (c) 2028 IBM Corp.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
@@ -21,23 +20,20 @@
 
 #
 # ==============================================================================
-#    THIS DOCKERFILE IS PROVIDED TO BUILD A WAS-LIBERTY BASED OAUTH SERVER 
-#    FOR MESSAGESIGHT DEMO ENVIRONMENT.
+#    THIS DOCKERFILE IS PROVIDED TO BUILD A PYTHON BASED SIMPLE OAUTH SERVER
+#    FOR TESTING OAUTH
 # ==============================================================================
 #
-
-
-#
-# Dockerfile to build an OAuth Server using developers version of 
-# IBM Websphere Liberty docker container image.
-# For reference, refer to the following link:
-# https://hub.docker.com/_/websphere-liberty/
+# Token endpoint:     http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/token
+# Authorize endpoint: http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize
 #
 
-# FROM websphere-liberty:webProfile8
-FROM websphere-liberty:kernel
-COPY --chown=1001:0  server.xml /config/
-# RUN installUtility install --acceptLicense defaultServer
-RUN configure.sh
-
+FROM python:3
+RUN apt-get update
+RUN apt-get install -y vim net-tools
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD [ "python", "./server.py" ]
 

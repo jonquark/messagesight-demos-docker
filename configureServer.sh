@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #*******************************************************************************
-# Copyright (c) 2017-2018 IBM Corp.
+# Copyright (c) 2017-2020 IBM Corp.
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
@@ -223,7 +223,7 @@ then
     # Use volume ${MAPVOL}/imaserver1/var/messagesight
     #
     echo "Create imaserver1 container"
-    sudo docker run --cap-add SYS_ADMIN \
+    sudo docker run --cap-add SYS_ADMIN --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
         --env-file=${CURDIR}/mstmpdir/server/imaserver-docker.env \
         --net ms-server1-net \
         --publish 16102:16102 --publish 9089:9089 --publish 1883:1883 --publish 8883:8883 \
@@ -334,7 +334,8 @@ curl -X POST http://127.0.0.1:9089/ima/v1/configuration -d \
       "AuthKey": "access_token",
       "UserInfoURL": "",
       "UserInfoKey": "",
-      "GroupInfoKey": ""
+      "GroupInfoKey": "",
+      "GroupDelimiter": ","
   }}}'
 
 # Create Security Profile
@@ -487,6 +488,29 @@ curl -X POST http://127.0.0.1:9089/ima/v1/configuration -d \
       "EnableAbout": true,
       "Description": "Unsecured endpoint for external clients.",
       "SecurityProfile": "",
+      "MaxSendSize": 16384,
+      "BatchMessages": true,
+      "QueuePolicies": null
+    }}}'
+
+# Non-secured MqttEndpoint to handle clients cinnecting using OAuth
+echo "Enable MqttEndpoint OAuth"
+curl -X POST http://127.0.0.1:9089/ima/v1/configuration -d \
+  '{"Endpoint": {
+    "MqttEndpointOAuth": {
+      "Port": 8883,
+      "Enabled": true,
+      "Protocol": "All",
+      "Interface": "All",
+      "InterfaceName": "All",
+      "ConnectionPolicies": "OpenConnectionPolicy",
+      "TopicPolicies": "TestTopicPolicy",
+      "SubscriptionPolicies": null,
+      "MaxMessageSize": "4096KB",
+      "MessageHub": "DemoHub",
+      "EnableAbout": true,
+      "Description": "Unsecured endpoint for external clients.",
+      "SecurityProfile": "TestSecProfile",
       "MaxSendSize": 16384,
       "BatchMessages": true,
       "QueuePolicies": null

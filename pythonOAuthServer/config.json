@@ -1,0 +1,15 @@
+{
+    "client_id": "pyOAuthTestClient",
+    "client_secret": "testPassw0rd",
+    "users": [
+        {"name":"spaceUser1","password":"testPassw0rd","groups":"Group1 Group2"},
+        {"name":"spaceUser2","password":"testPassw0rd","groups":"Group1 Group3"},
+        {"name":"spaceUser3","password":"testPassw0rd","groups":"Group3"},
+        {"name":"spaceUser4","password":"testPassw0rd","groups":"Group2 Group4"},
+        {"name":"commaUser1","password":"testPassw0rd","groups":"Group1,Group2"},
+        {"name":"commaUser2","password":"testPassw0rd","groups":"Group1,Group3"},
+        {"name":"commaUser3","password":"testPassw0rd","groups":"Group3"},
+        {"name":"commaUser4","password":"testPassw0rd","groups":"Group2,Group4"}
+    ]
+}
+

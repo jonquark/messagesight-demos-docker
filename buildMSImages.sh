@@ -53,9 +53,9 @@
 # - Download the latest install images of IBM MessageGateway Server, WebUI, and Bridge
 #   from IBM FixCentral or Pasport advantage and copy the files in the pkgs directory.
 #
-SERVER_IMAGE_NAME="IBMWIoTPMessageGatewayServer-5.0.0.2.20200229-1733.tz"
-WEBUI_IMAGE_NAME="IBMWIoTPMessageGatewayWebUI-5.0.0.2.20200107-2200.tz"
-BRIDGE_IMAGE_NAME="IBMWIoTPMessageGatewayBridge-5.0.0.2.20200107-2200.tz"
+SERVER_IMAGE_NAME="IBMWIoTPMessageGatewayServer-5.0.0.2.20200721-2154.tz"
+WEBUI_IMAGE_NAME="IBMWIoTPMessageGatewayWebUI-5.0.0.2.20200721-2154.tz"
+BRIDGE_IMAGE_NAME="IBMWIoTPMessageGatewayBridge-5.0.0.2.20200721-2154.tz"
 
 CURDIR=`pwd`
 export CURDIR
@@ -162,7 +162,7 @@ then
             mkdir -p ${CURDIR}/mstmpdir/webui
             cd ${CURDIR}/mstmpdir/webui
             tar zxf ${PKGDIR}/${WEBUI_IMAGE_NAME}
-            cp IBMIoTMessageGatewayWebUI-*.rpm imawebui.rpm
+            cp IBMWIoTPMessageGatewayWebUI-*.rpm imawebui.rpm
             sudo docker build --force-rm=true -t imawebui:5.0 .
         fi
     fi
