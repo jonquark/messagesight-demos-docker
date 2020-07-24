@@ -172,6 +172,6 @@ if __name__ == '__main__':
         configFD.close()
         setupUserData(config)
 
-    app.run(host= '0.0.0.0', port=5000, debug = True)
+    app.run(ssl_context='adhoc', host='0.0.0.0', port=5000, debug=True)
 
 
