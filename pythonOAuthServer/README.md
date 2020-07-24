@@ -10,8 +10,8 @@ operating environment, see [Docker Communit Edition](https://store.docker.com/se
 Make sure that docker-ce deamon has minumum of 1 GiB of free memory for OAuth Server container.
 
 The container exposes the following endpoints: <br>
-Token endpoint:     http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/token <br>
-Authorize endpoint: http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize <br>
+Token endpoint:     https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/token <br>
+Authorize endpoint: https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize <br>
 
 ## Dependencies
 
@@ -63,7 +63,7 @@ The response from the OAuth server should look similar to the following response
 To authorize a resource using access_token returned by last command:
 
 ```
-curl -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize -d "access_token=gRotiXHXwIUkNLyaWJGfeiDlUQCZiDbj"
+curl -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize -d "access_token=gRotiXHXwIUkNLyaWJGfeiDlUQCZiDbj"
 ```
 
 The response from the OAuth server should look similar to the following response message:
@@ -75,7 +75,7 @@ The response from the OAuth server should look similar to the following response
 
 Use the following REST call to configure OAuth profile object in the MessageSight server:
 
-POST http://<admin-endpoint-IP:Port>/ima/v1/configuration/
+POST https://<admin-endpoint-IP:Port>/ima/v1/configuration/
 
 You can use the following object configuration data in the payload of POST method.
 Substitute <ip_address_of_container_host> with the IP address of the container host.
@@ -84,10 +84,10 @@ Substitute <ip_address_of_container_host> with the IP address of the container h
 {    
   "OAuthProfile": {
     "<NameOfOAuthProfile>": {
-      "ResourceURL": "http://<ip_address_of_container_host>:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
+      "ResourceURL": "https://<ip_address_of_container_host>:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
       "KeyFileName": "",
       "AuthKey": "access_token",
-      "UserInfoURL": "http://<ip_address_of_container_host>:5000/oauth2/endpoint/PythonOAuthProvider/authori
+      "UserInfoURL": "https://<ip_address_of_container_host>:5000/oauth2/endpoint/PythonOAuthProvider/authori
 ze",
       "UserInfoKey": "client_id",
       "GroupInfoKey": "scope",
@@ -103,10 +103,10 @@ curl -X POST -k https://127.0.0.1:9089/ima/v1/configuration -d \
   '{
     "OAuthProfile": {
       "TestOAuthProfile": {
-        "ResourceURL": "http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
+        "ResourceURL": "https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
         "KeyFileName": "",
         "AuthKey": "access_token",
-        "UserInfoURL": "http://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
+        "UserInfoURL": "https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
         "UserInfoKey": "client_id",
         "GroupInfoKey": "scope",
         "GroupDelimiter": ",",
@@ -126,7 +126,7 @@ You can also use IBM MessageSight v5.0 WebUI to configure OAuthProfile object.
 ```
 $ curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d \
  "grant_type=password&client_id=wasLibertyClient&client_secret=testPassw0rd&username=commmaUser1&password=testPassw0rd" \
- http://127.0.0.1:9443/oauth2/endpoint/PythonOAuthProvider/token
+ https://127.0.0.1:9443/oauth2/endpoint/PythonOAuthProvider/token
 
 Get access_token from returned reponse.
 
