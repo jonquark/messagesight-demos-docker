@@ -329,12 +329,12 @@ echo "Configure OAuth profile"
 curl -X POST http://127.0.0.1:9089/ima/v1/configuration -d \
   '{"OAuthProfile": {
     "TestOAuthProfile": {
-      "ResourceURL": "http://172.27.5.2:9080/oauth2/endpoint/DemoOAuthProvider/token",
+      "ResourceURL": "https://172.27.5.7:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
       "KeyFileName": "",
       "AuthKey": "access_token",
-      "UserInfoURL": "",
-      "UserInfoKey": "",
-      "GroupInfoKey": "",
+      "UserInfoURL": "https://172.27.5.7:5000/oauth2/endpoint/PythonOAuthProvider/authorize",
+      "UserInfoKey": "client_id",
+      "GroupInfoKey": "scope",
       "GroupDelimiter": ","
   }}}'
 

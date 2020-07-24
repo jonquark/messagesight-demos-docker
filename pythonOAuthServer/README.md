@@ -1,6 +1,6 @@
-# Python based OAuth server docker container for OAuth testing
+# OAuth server in Python
 
-This project contains files to create and configure Python based OAuth Server docker container 
+This project contains files to create and configure OAuth Server docker container 
 that can be used with IBM IoT MessageSight to authenticate and authorize MQTT clients. 
 Use this container for demos or tests only.
 

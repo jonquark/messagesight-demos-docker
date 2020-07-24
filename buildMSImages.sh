@@ -53,9 +53,9 @@
 # - Download the latest install images of IBM MessageGateway Server, WebUI, and Bridge
 #   from IBM FixCentral or Pasport advantage and copy the files in the pkgs directory.
 #
-SERVER_IMAGE_NAME="IBMWIoTPMessageGatewayServer-5.0.0.2.20200721-2154.tz"
-WEBUI_IMAGE_NAME="IBMWIoTPMessageGatewayWebUI-5.0.0.2.20200721-2154.tz"
-BRIDGE_IMAGE_NAME="IBMWIoTPMessageGatewayBridge-5.0.0.2.20200721-2154.tz"
+SERVER_IMAGE_NAME="IBMWIoTPMessageGatewayServer-5.0.0.2.20200723-2123.tz"
+WEBUI_IMAGE_NAME="IBMWIoTPMessageGatewayWebUI-5.0.0.2.20200723-2123.tz"
+BRIDGE_IMAGE_NAME="IBMWIoTPMessageGatewayBridge-5.0.0.2.20200723-2123.tz"
 
 CURDIR=`pwd`
 export CURDIR
