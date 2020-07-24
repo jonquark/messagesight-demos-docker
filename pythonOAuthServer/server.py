@@ -139,6 +139,7 @@ def authorize():
             content = request.args
 
         if content is not None:
+            print(content)
             access_token = content.get('access_token')
 
         res, retval = verifyToken(access_token)
