@@ -9,7 +9,8 @@
         {"name":"commaUser1","password":"testPassw0rd","groups":"Group1,Group2"},
         {"name":"commaUser2","password":"testPassw0rd","groups":"Group1,Group3"},
         {"name":"commaUser3","password":"testPassw0rd","groups":"Group3"},
-        {"name":"commaUser4","password":"testPassw0rd","groups":"Group2,Group4"}
+        {"name":"commaUser4","password":"testPassw0rd","groups":"Group2,Group4"},
+        {"name":"hashCommaUser1","password":"testPassw0rd","groups":"Group1#,Group2"}
     ]
 }
 

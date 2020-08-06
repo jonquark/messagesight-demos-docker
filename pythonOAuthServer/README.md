@@ -99,7 +99,7 @@ ze",
 
 Example:
 
-curl -X POST -k https://127.0.0.1:9089/ima/v1/configuration -d \
+$ curl -X POST -k https://127.0.0.1:9089/ima/v1/configuration -d \
   '{
     "OAuthProfile": {
       "TestOAuthProfile": {
@@ -124,13 +124,18 @@ You can also use IBM MessageSight v5.0 WebUI to configure OAuthProfile object.
 ## Send Test Message
 
 ```
-$ curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d \
- "grant_type=password&client_id=wasLibertyClient&client_secret=testPassw0rd&username=commmaUser1&password=testPassw0rd" \
- https://127.0.0.1:9443/oauth2/endpoint/PythonOAuthProvider/token
+$ curl -k -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d  "grant_type=password&client_id=pyOAuthTestClient&client_secret=testPassw0rd&username=commaUser1&password=testPassw0rd"  https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/token
+{
+  "access_token": "fkADQXOdIkrUPbmLmjnIhDqGHpHtQgce",
+  "expires_in": 1596721771,
+  "refresh_token": "QWwAfcIhXMYtKDAssPSUvEiTXYmlFxwD",
+  "scope": "",
+  "token_type": "Bearer"
+}
+ 
+Get access_token from returned reponse and use as passowrd in the next command.
 
-Get access_token from returned reponse.
-
-$ mosquitto_pub -h 127.0.0.1 -p 9883 -i "clientGroupA" -u "IMA_OAUTH_ACCESS_TOKEN" -P '<access_token>' -t demoTopic -q 2 -m "This is a Test Message"
+$ mosquitto_pub -h 127.0.0.1 -p 8883 -i "IBMIoTClient" -u "IMA_OAUTH_ACCESS_TOKEN" -t "test/Group1/topic" -q 2 -m "This is a Test Message" -P "fkADQXOdIkrUPbmLmjnIhDqGHpHtQgce"
 
 ```
 

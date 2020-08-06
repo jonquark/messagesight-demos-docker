@@ -21,6 +21,7 @@ def setupUserData(config):
     AppCId = config['client_id']
     AppSecret = config['client_secret']
     for user in config['users']:
+        print("Set User: ", user)
         users.append(user['name'])
         passwords.append(user['password'])
         groups.append(user['groups'])
@@ -38,6 +39,7 @@ def authenticateUser(username, password):
     global nusers, AppCId, AppSecret, users, passwords, groups, tokens, reftokens, expires
     for i in range(nusers):
         if username == users[i] and password == passwords[i]:
+            print("User found for authentication: ", username)
             letters = string.ascii_letters
             tokens[i] = ''.join(random.choice(letters) for j in range(32))
             reftokens[i] = ''.join(random.choice(letters) for j in range(32))
