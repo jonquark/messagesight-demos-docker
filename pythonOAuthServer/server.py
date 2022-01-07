@@ -142,7 +142,7 @@ def authorize():
 
         if content is not None:
             print(content)
-            access_token = content.get('access_token')
+            access_token = content.get('token')
 
         res, retval = verifyToken(access_token)
         if res == False:
