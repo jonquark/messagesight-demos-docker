@@ -63,7 +63,7 @@ The response from the OAuth server should look similar to the following response
 To authorize a resource using access_token returned by last command:
 
 ```
-curl -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize -d "access_token=gRotiXHXwIUkNLyaWJGfeiDlUQCZiDbj"
+curl -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" https://127.0.0.1:5000/oauth2/endpoint/PythonOAuthProvider/authorize -d "token=gRotiXHXwIUkNLyaWJGfeiDlUQCZiDbj"
 ```
 
 The response from the OAuth server should look similar to the following response message:
