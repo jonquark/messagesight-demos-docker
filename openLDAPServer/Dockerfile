@@ -32,7 +32,7 @@
 #
 
 
-FROM centos:latest
+FROM centos:7
 
 MAINTAINER ranjan.dasgupta@us.ibm.com
 
